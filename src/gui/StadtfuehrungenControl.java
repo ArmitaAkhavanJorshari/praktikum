@@ -43,7 +43,10 @@ public class StadtfuehrungenControl {
     	try {
       		if("csv".equals(typ)){
       			
-      			stdmodel.leseAusDatei(typ);
+      			stdmodel.leseAusCSVDatei(typ);
+      			stdview.zeigeInformationsfensterAn("Das Stadtfuehrung wurde gelesen!");
+      		}else if("txt".equals(typ)) {
+      			stdmodel.leseAusTXTDatei(typ);
       			stdview.zeigeInformationsfensterAn("Das Stadtfuehrung wurde gelesen!");
       		}
        		else{
@@ -55,6 +58,7 @@ public class StadtfuehrungenControl {
 		catch(Exception exc){
 			stdview.zeigeFehlermeldungsfensterAn(
 				"Unbekannter Fehler beim Lesen!");
+			exc.printStackTrace();
 		}
 	}
 		
@@ -70,5 +74,17 @@ public class StadtfuehrungenControl {
 				"Unbekannter Fehler beim Speichern!");
 		}
 	}
+	 void schreibeStadtfuehrungenInTXTDatei() {
+			try {
+				stdmodel.schreibeStadtfuehrungenInTXTDatei();
+	   			stdview.zeigeInformationsfensterAn(
+		   			"Die Stadtfuehrungen wurden gespeichert!");
+			}	
+			
+			catch(Exception exc){
+				stdview.zeigeFehlermeldungsfensterAn(
+					"Unbekannter Fehler beim Speichern!");
+			}
+		}
 
 }
