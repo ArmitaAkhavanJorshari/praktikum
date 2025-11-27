@@ -1,4 +1,4 @@
-package gui;
+package gui.guiStadtfuehrung;
 
 
 
@@ -12,8 +12,10 @@ public class StadtfuehrungenControl {
 	private StadtfuehrungenModel stdmodel;
 	
 	public StadtfuehrungenControl(Stage primaryStage) {
+		this.stdmodel=stdmodel.getInstance();
 		this.stdview=new StadtfuehrungenView(this, primaryStage, stdmodel);
-		this.stdmodel=new StadtfuehrungenModel();
+		
+		stdmodel.addObserver(stdview);
 	}
 	
 	 void nehmeStadtfuehrungAuf(){
@@ -30,14 +32,14 @@ public class StadtfuehrungenControl {
      	}
     }
    
-     void zeigeStadtfuehrungenAn(){
+     /*void zeigeStadtfuehrungenAn(){
     	if(stdmodel.getStadfuehrung() != null){
     		stdview.getTxtAnzeige().setText(stdmodel.getStadfuehrung().gibStadtfuehrungZurueck(' '));
     	}
     	else{
     		stdview.zeigeInformationsfensterAn("Bisher wurde keine Stadtfuehrung aufgenommen!");
     	}
-    }    
+    }*/    
 		  
      void leseAusDatei(String typ){
     	try {
@@ -74,17 +76,6 @@ public class StadtfuehrungenControl {
 				"Unbekannter Fehler beim Speichern!");
 		}
 	}
-	 void schreibeStadtfuehrungenInTXTDatei() {
-			try {
-				stdmodel.schreibeStadtfuehrungenInTXTDatei();
-	   			stdview.zeigeInformationsfensterAn(
-		   			"Die Stadtfuehrungen wurden gespeichert!");
-			}	
-			
-			catch(Exception exc){
-				stdview.zeigeFehlermeldungsfensterAn(
-					"Unbekannter Fehler beim Speichern!");
-			}
-		}
+	
 
 }

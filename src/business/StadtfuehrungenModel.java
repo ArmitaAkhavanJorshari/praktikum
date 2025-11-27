@@ -4,11 +4,26 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Vector;
 
 import fileCreatorsAkhavan.ConcreteCsvCreator;
+import ownUtil.Observable;
+import ownUtil.Observer;
 
-public class StadtfuehrungenModel {
+public class StadtfuehrungenModel implements Observable {
 	
+	private static StadtfuehrungenModel instance=new StadtfuehrungenModel();
+	
+	private StadtfuehrungenModel() {
+		
+	}
+	
+	public static StadtfuehrungenModel getInstance() {
+		if(instance==null) {
+			instance=new StadtfuehrungenModel();
+		}
+		return instance;
+	}
 	private Stadtfuehrung stadfuehrung;
 
 	public Stadtfuehrung getStadfuehrung() {
@@ -35,6 +50,8 @@ public class StadtfuehrungenModel {
 			 String[] zeile=reader.leseAusDatei();
 			 this.stadfuehrung=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
 			 reader.schliesseDatei();
+			 
+			 notifyObservers();
 		 
 		
 	}
@@ -47,6 +64,8 @@ public class StadtfuehrungenModel {
 				 String[] zeile=reader.leseAusDatei();
 				 this.stadfuehrung=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
 				 reader.schliesseDatei();
+				 
+				 notifyObservers();
 			 
 			
 		}
@@ -56,12 +75,29 @@ public class StadtfuehrungenModel {
 		aus.write(stadfuehrung.gibStadtfuehrungZurueck(';'));
 		aus.close();
 	}
-	 public void schreibeStadtfuehrungenInTXTDatei() throws Exception{
-			
-			BufferedWriter aus = new BufferedWriter(new FileWriter("StadtfuehrungenAusgabe.txt", true));
-			aus.write(stadfuehrung.gibStadtfuehrungZurueck('\n'));
-			aus.close();
+	 
+	  private Vector<Observer> observers=new Vector<Observer>();
+
+	@Override
+	public void addObserver(Observer obs) {
+		observers.add(obs);
+		
+	}
+
+	@Override
+	public void removeObserver(Observer obs) {
+		observers.remove(obs);
+		
+	}
+
+	@Override
+	public void notifyObservers() {
+		for(Observer obs : observers) {
+			obs.update();
 		}
+		
+	}
+	
 		
 	
 

@@ -1,4 +1,4 @@
-package gui;
+package gui.guiStadtfuehrung;
 
 import business.*;
 import javafx.event.ActionEvent;
@@ -17,8 +17,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ownUtil.MeldungsfensterAnzeiger;
+import ownUtil.Observer;
 
-public class StadtfuehrungenView {
+public class StadtfuehrungenView implements Observer {
 	
 	private StadtfuehrungenControl stdcontrol;
 	private StadtfuehrungenModel stdModel;
@@ -138,7 +139,7 @@ public class StadtfuehrungenView {
 	    btnAnzeige.setOnAction(new EventHandler<ActionEvent>() {
 	    	@Override
 	        public void handle(ActionEvent e) {
-	    		stdcontrol.zeigeStadtfuehrungenAn();
+	    		update();
 	        } 
    	    });
 	    mnItmCsvImport.setOnAction(new EventHandler<ActionEvent>() {
@@ -217,6 +218,17 @@ public TextArea getTxtAnzeige() {
 
 public void setTxtAnzeige(TextArea txtAnzeige) {
 	this.txtAnzeige = txtAnzeige;
+}
+
+@Override
+public void update() {
+	if(stdModel.getStadfuehrung() != null){
+		this.getTxtAnzeige().setText(stdModel.getStadfuehrung().gibStadtfuehrungZurueck(' '));
+	}
+	else{
+		this.zeigeInformationsfensterAn("Bisher wurde keine Stadtfuehrung aufgenommen!");
+	}
+	
 }
 
 }
