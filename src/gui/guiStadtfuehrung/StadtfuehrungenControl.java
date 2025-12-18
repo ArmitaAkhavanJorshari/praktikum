@@ -20,12 +20,13 @@ public class StadtfuehrungenControl {
 	
 	 void nehmeStadtfuehrungAuf(){
     	try{ 
-    		stdmodel.setStadfuehrung(new Stadtfuehrung(
+    		stdmodel.addStadfuehrung(new Stadtfuehrung(
     			stdview.getTxtTitel().getText(), 
    	            Integer.parseInt(stdview.getTxtIdentnummer().getText()),
    	            stdview.getTxtKurzbeschreibung().getText(),
    	            Float.parseFloat(stdview.getTxtStartuhrzeit().getText()),
     		    stdview.getTxtDaten().getText().split(";")));
+    		stdmodel.notifyObservers();
        	}
        	catch(Exception exc){
        		stdview.zeigeFehlermeldungsfensterAn(exc.getMessage());

@@ -154,12 +154,10 @@ public class StadtfuehrungenView implements Observer {
 		    	stdcontrol.leseAusDatei("txt");
 		    }
     	});
-	    mnItmCsvExport.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				stdcontrol.schreibeStadtfuehrungenInCsvDatei();
-			}	
-	    });
+	    mnItmCsvExport.setOnAction(
+				e -> stdcontrol.schreibeStadtfuehrungenInCsvDatei()
+				
+	    );
     }
    
     void zeigeInformationsfensterAn(String meldung){
@@ -223,7 +221,11 @@ public void setTxtAnzeige(TextArea txtAnzeige) {
 @Override
 public void update() {
 	if(stdModel.getStadfuehrung() != null){
-		this.getTxtAnzeige().setText(stdModel.getStadfuehrung().gibStadtfuehrungZurueck(' '));
+		StringBuffer text=new StringBuffer();
+		for(Stadtfuehrung s:stdModel.getStadfuehrung()) {
+			text.append(s.gibStadtfuehrungZurueck(' ')).append("\n");
+		}
+		this.txtAnzeige.setText(text.toString());
 	}
 	else{
 		this.zeigeInformationsfensterAn("Bisher wurde keine Stadtfuehrung aufgenommen!");

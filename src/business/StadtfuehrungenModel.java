@@ -1,12 +1,13 @@
 package business;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
+//import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Vector;
 
-import fileCreatorsAkhavan.ConcreteCsvCreator;
+//import fileCreatorsAkhavan.ConcreteCsvCreator;
 import ownUtil.Observable;
 import ownUtil.Observer;
 
@@ -24,14 +25,15 @@ public class StadtfuehrungenModel implements Observable {
 		}
 		return instance;
 	}
-	private Stadtfuehrung stadfuehrung;
+	private ArrayList<Stadtfuehrung> stadfuehrung=new ArrayList<>();
 
-	public Stadtfuehrung getStadfuehrung() {
+	public ArrayList<Stadtfuehrung> getStadfuehrung() {
 		return stadfuehrung;
 	}
 
-	public void setStadfuehrung(Stadtfuehrung stadfuehrung) {
-		this.stadfuehrung = stadfuehrung;
+	public void addStadfuehrung(Stadtfuehrung s) {
+		stadfuehrung.add(s);
+		
 	}
 
 	 public void leseAusCSVDatei(String type) throws Exception{
@@ -48,7 +50,8 @@ public class StadtfuehrungenModel implements Observable {
 			 fileCreatorsAkhavan.ReaderProductAkhavan reader=rca.factoryMethode();
 			 
 			 String[] zeile=reader.leseAusDatei();
-			 this.stadfuehrung=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
+			 Stadtfuehrung s=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
+			 addStadfuehrung(s);
 			 reader.schliesseDatei();
 			 
 			 notifyObservers();
@@ -62,7 +65,8 @@ public class StadtfuehrungenModel implements Observable {
 				 fileCreatorsAkhavan.ReaderProductAkhavan reader=rca.factoryMethode();
 				 
 				 String[] zeile=reader.leseAusDatei();
-				 this.stadfuehrung=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
+				 Stadtfuehrung s=new Stadtfuehrung(zeile[0], Integer.parseInt(zeile[1]), zeile[2], Float.parseFloat(zeile[3]), zeile[4].split("_"));
+				 addStadfuehrung(s);
 				 reader.schliesseDatei();
 				 
 				 notifyObservers();
@@ -72,7 +76,10 @@ public class StadtfuehrungenModel implements Observable {
 	 public void schreibeStadtfuehrungenInCsvDatei() throws Exception{
 		
 		BufferedWriter aus = new BufferedWriter(new FileWriter("StadtfuehrungenAusgabe.csv", true));
-		aus.write(stadfuehrung.gibStadtfuehrungZurueck(';'));
+		for(Stadtfuehrung s:stadfuehrung) {
+			aus.write(s.gibStadtfuehrungZurueck(';'));
+		}
+		
 		aus.close();
 	}
 	 

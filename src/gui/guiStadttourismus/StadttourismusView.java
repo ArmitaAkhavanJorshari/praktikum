@@ -1,4 +1,5 @@
 package gui.guiStadttourismus;
+import business.Stadtfuehrung;
 import business.StadtfuehrungenModel;
 import javafx.event.*;
 import javafx.scene.Scene;
@@ -98,9 +99,12 @@ public class StadttourismusView implements Observer{
 				public void update() {
 					try {
 						if(stadtfuehrungenModel.getStadfuehrung() != null){
-							txtAnzeigeStadtfuehrungen.setText(
-								stadtfuehrungenModel.getStadfuehrung()
-							.gibStadtfuehrungZurueck(' '));
+							StringBuffer text=new StringBuffer();
+							for(Stadtfuehrung s:stadtfuehrungenModel.getStadfuehrung()) {
+								text.append((s.gibStadtfuehrungZurueck(' '))).append("\n");
+							}
+							this.txtAnzeigeStadtfuehrungen.setText(text.toString());
+							
 						}
 						else{
 							zeigeInformationsfensterAn(

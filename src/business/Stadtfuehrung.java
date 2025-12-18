@@ -10,6 +10,9 @@ public class Stadtfuehrung {
     
     public Stadtfuehrung(String titel, int identnummer, String kurzbeschreibung,
        	float startuhrzeit, String[] daten){
+    	if(titel==null) {
+    		throw new IllegalArgumentException("Titel darf nicht null sein");
+    	}
     	this.titel = titel;
       	this.identnummer = identnummer;
        	this.kurzbeschreibung = kurzbeschreibung;
